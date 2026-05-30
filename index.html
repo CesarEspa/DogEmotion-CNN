@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detector de Emociones Caninas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="app-shell">
+        <section class="hero-panel">
+            <div>
+                <p class="eyebrow">CNN + filtro de perro</p>
+                <h1>Detector de emociones caninas</h1>
+                <p class="lead-copy">
+                    Analiza solo cuando la imagen contiene un perro y compara la predicci&oacute;n con ejemplos reales de Kaggle.
+                </p>
+                <div class="dog-gallery" aria-label="Muestras del dataset canino">
+                    <img src="dog-emotion/Dog%20Emotion/happy/04FMq3exmYnLxQ85XzYhS0a9Mrb5Ic420.jpg" alt="Perro feliz del dataset">
+                    <img src="dog-emotion/Dog%20Emotion/relaxed/2bZYapubNoFKiByQSxl1YpKvdO2x3x326.jpg" alt="Perro relajado del dataset">
+                    <img src="dog-emotion/Dog%20Emotion/angry/RbzNOvY5GIAl3PSjIRTKpEkQs1NByq575.jpg" alt="Perro enojado del dataset">
+                </div>
+            </div>
+            <div class="dataset-summary" aria-label="Resumen del dataset">
+                <span><strong>4</strong> emociones</span>
+                <span><strong>Dog</strong> filtro visual</span>
+                <span><strong>Local</strong> fotos privadas</span>
+            </div>
+        </section>
+
+        <section class="workspace-grid">
+            <article class="control-panel">
+                <div class="panel-heading">
+                    <p class="eyebrow">Entrada</p>
+                    <h2>Elige una fuente</h2>
+                    <span class="tagline">Olfato visual antes de predecir</span>
+                </div>
+
+                <div class="mode-tabs" role="group" aria-label="Seleccionar fuente de imagen">
+                    <button class="mode-btn active" type="button" id="btn-random">Kaggle</button>
+                    <button class="mode-btn" type="button" id="btn-upload">Archivo</button>
+                    <button class="mode-btn" type="button" id="btn-camera">C&aacute;mara</button>
+                </div>
+
+                <div id="panel-random" class="source-panel">
+                    <label for="emotion-filter" class="form-label">Imagen aleatoria del dataset</label>
+                    <div class="random-controls">
+                        <select id="emotion-filter" class="form-select">
+                            <option value="all">Todas las emociones</option>
+                            <option value="angry">Enojado</option>
+                            <option value="happy">Feliz</option>
+                            <option value="relaxed">Relajado</option>
+                            <option value="sad">Triste</option>
+                        </select>
+                        <button class="btn btn-primary action-btn" type="button" id="btn-new-random">Generar</button>
+                    </div>
+                    <p class="helper-text">Antes de predecir la emoci&oacute;n, la app verifica que la imagen contenga un perro.</p>
+                </div>
+
+                <div id="panel-upload" class="source-panel hidden">
+                    <label for="input-imagen" class="form-label">Selecciona una imagen de tu perro</label>
+                    <input type="file" id="input-imagen" accept="image/*" class="form-control">
+                    <p class="helper-text">La imagen se procesa en tu navegador.</p>
+                </div>
+
+                <div id="panel-camera" class="source-panel hidden">
+                    <p class="form-label mb-2">C&aacute;mara en vivo</p>
+                    <div class="camera-controls">
+                        <button class="btn btn-primary action-btn" type="button" id="btn-start-camera">Iniciar</button>
+                        <button class="btn btn-outline-secondary action-btn" type="button" id="btn-stop-camera">Detener</button>
+                    </div>
+                    <p class="helper-text">Funciona en localhost o HTTPS y pedir&aacute; permiso del navegador.</p>
+                </div>
+
+                <div class="result-panel">
+                    <p class="result-label">Resultado</p>
+                    <div id="resultado" class="result-main">Cargando modelo...</div>
+                    <div class="result-details">
+                        <span id="dog-label">Filtro perro: preparando</span>
+                        <span id="source-label">Fuente: esperando</span>
+                        <span id="real-label">Etiqueta Kaggle: --</span>
+                        <span id="confidence-label">Confianza: --</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="preview-panel">
+                <div class="preview-header">
+                    <div>
+                        <p class="eyebrow">Vista previa</p>
+                        <h2 id="preview-title">Imagen del dataset</h2>
+                    </div>
+                    <div class="status-stack" aria-label="Estados de carga">
+                        <span id="model-status" class="status-pill">CNN cargando</span>
+                        <span id="detector-status" class="status-pill">Filtro cargando</span>
+                    </div>
+                </div>
+
+                <div class="media-stage">
+                    <video id="video" autoplay playsinline muted class="media-frame hidden"></video>
+                    <canvas id="canvas" width="450" height="450" class="media-frame"></canvas>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.18.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
